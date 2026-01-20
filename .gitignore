@@ -10,5 +10,4 @@ Saved
 *.sdf
 *.sln
 *.suo
-*.xcodeproj
-*.xcworkspace
+*.DS_Store
