@@ -1,33 +1,46 @@
 #include "FileScanner.h"
-#include "Misc/Paths.h"
 #include "HAL/FileManager.h"
+#include "Misc/Paths.h"
 
-UFileScanner::UFileScanner()
+TArray<FScannedFileInfo> UFileScanner::ScanFiles(const FString& DirectoryPath)
 {
-    // Конструктор можно использовать для инициализации
+    TArray<FScannedFileInfo> Result;
+
+    FString FullPath = DirectoryPath;
+    if (!FPaths::DirectoryExists(FullPath))
+    {
+        FullPath = FPaths::ProjectDir() / DirectoryPath;
+    }
+
+    TArray<FString> Files;
+    IFileManager::Get().FindFiles(Files, *FullPath, TEXT("json"));
+
+    for (const FString& File : Files)
+    {
+        ProcessFile(FullPath / File, Result);
+    }
+
+    return Result;
 }
 
-void UFileScanner::ScanFiles(const FString& DirectoryPath)
+void UFileScanner::ProcessFile(const FString& FilePath, TArray<FScannedFileInfo>& OutFiles)
 {
-    if (!FPaths::DirectoryExists(DirectoryPath))
+    FFileStatData StatData = IFileManager::Get().GetStatData(*FilePath);
+    if (!StatData.bIsValid)
     {
-        UE_LOG(LogTemp, Warning, TEXT("Directory does not exist: %s"), *DirectoryPath);
         return;
     }
 
-    // Получаем все файлы в директории
-    TArray<FString> FoundFiles;
-    IFileManager::Get().FindFilesRecursive(FoundFiles, *DirectoryPath, TEXT("*.*"), true, false);
+    FScannedFileInfo Info;
+    Info.FileName = FPaths::GetCleanFilename(FilePath);
+    Info.CreationDate = StatData.CreationTime;
 
-    for (const FString& File : FoundFiles)
-    {
-        ProcessFile(File);
-    }
+    OutFiles.Add(Info);
 }
 
-void UFileScanner::ProcessFile(const FString& FilePath)
-{
-    // Пример обработки файла
-    UE_LOG(LogTemp, Log, TEXT("Found file: %s"), *FilePath);
-}
 
+
+игра.работать;
+игра.графика_лучше_чем_в_гта6;
+игра.добавить_фурри;
+игра.занять_первое_место;

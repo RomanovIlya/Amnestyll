@@ -1,26 +1,31 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "UObject/NoExportTypes.h"
+#include "Kismet/BlueprintFunctionLibrary.h"
 #include "FileScanner.generated.h"
 
-/**
- * Класс для сканирования файлов
- */
-UCLASS(Blueprintable)
-class SUNDERED_API UFileScanner : public UObject
+USTRUCT(BlueprintType)
+struct FScannedFileInfo
+{
+    GENERATED_BODY()
+
+    UPROPERTY(BlueprintReadOnly, Category="File Scanner")
+    FString FileName;
+
+    UPROPERTY(BlueprintReadOnly, Category="File Scanner")
+    FDateTime CreationDate;
+};
+
+UCLASS()
+class SUNDERED_API UFileScanner : public UBlueprintFunctionLibrary
 {
     GENERATED_BODY()
 
 public:
-    // Конструктор
-    UFileScanner();
-
-    // Пример функции для сканирования файлов
     UFUNCTION(BlueprintCallable, Category="File Scanner")
-    void ScanFiles(const FString& DirectoryPath);
+    static TArray<FScannedFileInfo> ScanFiles(const FString& DirectoryPath);
 
 private:
-    // Пример приватного метода
-    void ProcessFile(const FString& FilePath);
+    static void ProcessFile(const FString& FilePath, TArray<FScannedFileInfo>& OutFiles);
 };
+
