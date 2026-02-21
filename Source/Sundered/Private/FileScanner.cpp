@@ -38,9 +38,3 @@ void UFileScanner::ProcessFile(const FString& FilePath, TArray<FScannedFileInfo>
     OutFiles.Add(Info);
 }
 
-
-
-игра.работать;
-игра.графика_лучше_чем_в_гта6;
-игра.добавить_фурри;
-игра.занять_первое_место;
