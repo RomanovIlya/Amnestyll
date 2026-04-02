@@ -19,6 +19,10 @@ TArray<FScannedFileInfo> UFileScanner::ScanFiles(const FString& DirectoryPath)
     {
         ProcessFile(FullPath / File, Result);
     }
+    Result.Sort([](const FScannedFileInfo& A, const FScannedFileInfo& B)
+    {
+            return A.CreationDate > B.CreationDate;
+    });
 
     return Result;
 }
