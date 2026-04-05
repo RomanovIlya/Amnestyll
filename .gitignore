@@ -11,3 +11,7 @@ Saved
 *.sln
 *.suo
 *.DS_Store
+*.xcodeproj
+*.xcworkspace
+
+
